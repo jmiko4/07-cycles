@@ -26,12 +26,15 @@ namespace Unit05.Game.Scripting
         {
             Snake snake = (Snake)cast.GetFirstActor("snake");
             List<Actor> segments = snake.GetSegments();
+            Snake2 snake2 = (Snake2)cast.GetFirstActor("snake2");
+            List<Actor> segments2 = snake2.GetSegments();
             Actor score = cast.GetFirstActor("score");
             Actor food = cast.GetFirstActor("food");
             List<Actor> messages = cast.GetActors("messages");
             
             _videoService.ClearBuffer();
             _videoService.DrawActors(segments);
+            _videoService.DrawActors(segments2);
             _videoService.DrawActor(score);
             _videoService.DrawActor(food);
             _videoService.DrawActors(messages);

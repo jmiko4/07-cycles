@@ -17,6 +17,7 @@ namespace Unit05.Game.Scripting
     public class HandleCollisionsAction : Action
     {
         private bool _isGameOver = false;
+        private int winner;
 
         /// <summary>
         /// Constructs a new instance of HandleCollisionsAction.
@@ -43,6 +44,7 @@ namespace Unit05.Game.Scripting
         private void HandleFoodCollisions(Cast cast)
         {
             Snake snake = (Snake)cast.GetFirstActor("snake");
+            Snake2 snake2 = (Snake2)cast.GetFirstActor("snake2");
             Score score = (Score)cast.GetFirstActor("score");
             Food food = (Food)cast.GetFirstActor("food");
             
@@ -50,6 +52,14 @@ namespace Unit05.Game.Scripting
             {
                 int points = food.GetPoints();
                 snake.GrowTail(points);
+                score.AddPoints(points);
+                food.Reset();
+            }
+
+            if (snake2.GetHead().GetPosition().Equals(food.GetPosition()))
+            {
+                int points = food.GetPoints();
+                snake2.GrowTail(points);
                 score.AddPoints(points);
                 food.Reset();
             }
@@ -62,14 +72,28 @@ namespace Unit05.Game.Scripting
         private void HandleSegmentCollisions(Cast cast)
         {
             Snake snake = (Snake)cast.GetFirstActor("snake");
+            Snake2 snake2 = (Snake2)cast.GetFirstActor("snake2");
             Actor head = snake.GetHead();
+            Actor head2 = snake2.GetHead();
             List<Actor> body = snake.GetBody();
+            List<Actor> body2 = snake2.GetBody();
 
             foreach (Actor segment in body)
             {
-                if (segment.GetPosition().Equals(head.GetPosition()))
+                if (segment.GetPosition().Equals(head2.GetPosition()))
                 {
                     _isGameOver = true;
+                    winner = 1;
+
+                }
+            }
+
+            foreach (Actor segment2 in body2)
+            {
+                if (segment2.GetPosition().Equals(head.GetPosition()))
+                {
+                    _isGameOver = true;
+                    winner = 2;
                 }
             }
         }
@@ -79,7 +103,9 @@ namespace Unit05.Game.Scripting
             if (_isGameOver == true)
             {
                 Snake snake = (Snake)cast.GetFirstActor("snake");
+                Snake2 snake2 = (Snake2)cast.GetFirstActor("snake2");
                 List<Actor> segments = snake.GetSegments();
+                List<Actor> segments2 = snake2.GetSegments();
                 Food food = (Food)cast.GetFirstActor("food");
 
                 // create a "game over" message
@@ -92,11 +118,22 @@ namespace Unit05.Game.Scripting
                 message.SetPosition(position);
                 cast.AddActor("messages", message);
 
-                // make everything white
-                foreach (Actor segment in segments)
-                {
-                    segment.SetColor(Constants.WHITE);
+                //make everything white
+                if (winner == 2){
+                    foreach (Actor segment in segments)
+                    {
+                        segment.SetColor(Constants.WHITE);
+                        message.SetText("Green Snake Wins");
+                    }
+                } 
+                else{
+                    foreach (Actor segment in segments2)
+                    {
+                        segment.SetColor(Constants.WHITE);
+                        message.SetText("Red Snake Wins");
+                    }
                 }
+                
                 food.SetColor(Constants.WHITE);
             }
         }
