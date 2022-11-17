@@ -7,7 +7,6 @@ namespace Unit05.Game.Scripting{
         //Is a clock that keeps track of the game's countdown
         private int _tickCount;
         public Clock(){
-            _timer = 60;
             _tickCount = 0;
         }
 
