@@ -33,7 +33,9 @@ namespace Unit05
             script.AddAction("input", new ControlActorsAction(keyboardService));
             script.AddAction("update", new MoveActorsAction());
             script.AddAction("update", new HandleCollisionsAction());
+            script.AddAction("update", new Clock());
             script.AddAction("output", new DrawActorsAction(videoService));
+            
 
             // start the game
             Director director = new Director(videoService);
