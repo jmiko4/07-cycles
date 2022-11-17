@@ -452,3 +452,5 @@ $RECYCLE.BIN/
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+obj/Debug/net6.0/07-cycles.pdb
+obj/Debug/net6.0/07-cycles.dll
